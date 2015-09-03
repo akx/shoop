@@ -1,0 +1,28 @@
+<div id="carousel_product_{{ product.id }}" class="product-carousel carousel slide" data-ride="carousel" data-interval="false">
+    <div class="carousel-inner">
+        {% for product_image in images %}
+            <div class="item{% if product_image == primary_image %} active{% endif %}">
+                <a href="{{ product_image.url }}" class="thumbnail" rel="gallery1">
+                    <img class="img-responsive" src="{{ product_image|thumbnail(size=(600, 600), crop="smart", upscale=True) }}" alt="{{ product.name }}">
+                </a>
+            </div>
+        {% else %}
+            <div class="item active">
+                <div class="thumbnail" rel="gallery1">
+                    <img class="img-responsive no-image" alt="{{ product.name }}" src="{{ STATIC_URL }}shoop/img/no_image.png">
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+<div class="row carousel-thumbnails">
+    {% for product_image in images %}
+        {% if loop|count > 1 %}
+            <div class="col-xs-4 col-md-3">
+                <a href="#carousel_product_{{ product.id }}" data-slide-to="{{ loop.index0 }}" class="thumbnail">
+                    <img src="{{ product_image|thumbnail(size=(300, 300), crop="smart", upscale=True)}}" class="img-responsive" alt="{{ product.name }}">
+                </a>
+            </div>
+        {% endif %}
+    {% endfor %}
+</div>

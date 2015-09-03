@@ -1,0 +1,12 @@
+{%- set cross_sell_products = shoop.product.get_product_cross_sells(product, relation_type=type) %}
+{% if cross_sell_products %}
+    <hr>
+    {% if title %}<h3>{{ title }}</h3>{% endif %}
+    <div class="row">
+        {% for product in cross_sell_products %}
+            <div class="col-md-3">
+                {{ product_box(product) }}
+            </div>
+        {% endfor %}
+    </div>
+{% endif %}

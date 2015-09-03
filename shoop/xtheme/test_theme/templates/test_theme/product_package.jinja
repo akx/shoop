@@ -1,0 +1,22 @@
+{% if package_children %}
+    <hr>
+    <h3>{% trans %}Includes these products{% endtrans %}</h3>
+    <div class="row">
+        {% for child in package_children %}
+            <div class="col-md-3">
+                {{ macros.product_box(child) }}
+            </div>
+        {% endfor %}
+    </div>
+
+{% elif package_parents %}
+    <hr>
+    <h3>{% trans %}Also available in{% endtrans %}</h3>
+    <div class="row">
+        {% for parent in package_parents %}
+            <div class="col-md-3">
+                {{ macros.product_box(parent) }}
+            </div>
+        {% endfor %}
+    </div>
+{% endif %}

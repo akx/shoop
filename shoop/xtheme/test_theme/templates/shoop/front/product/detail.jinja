@@ -1,0 +1,59 @@
+{% extends "shoop/front/base.jinja" %}
+
+{% block extrameta %}
+    <meta property="og:site_name" content="{{ request.shop }}">
+    <meta property="og:type" content="product">
+    <meta property="og:url" content="{{ shoop.urls.model_url(product, absolute=True) }}">
+    <meta property="og:title" content="{{ product.name }}">
+    {% if primary_image %}
+        <meta property="og:image" content="{{ request.build_absolute_uri(primary_image.url) }}">
+    {% endif %}
+{% endblock %}
+
+{% block title %}{{ product.name }}{% endblock %}
+{% block content_title %}{% endblock %}
+
+{% block breadcrumb %}
+    <ol class="breadcrumb">
+        <li><a href="/"><i class="glyphicon glyphicon-home"></i></a></li>
+        {% set category = shop_product.primary_category %}
+        {% if category %}
+            {% for c in category.get_ancestors() if c.is_visible(customer=request.customer) %}
+                <li><a href="{{ shoop.urls.model_url(c) }}">{{ c.name }}</a></li>
+            {% endfor %}
+        {% endif %}
+        <li class="active">{{ product.name }}</li>
+    </ol>
+{% endblock %}
+
+{% block content %}
+
+    <div class="row product-main">
+        {% placeholder "main" %}
+            {% row %}
+                {% column {"sm": 5} %}{% plugin "product_images" %}{% endplugin %}{% endcolumn %}
+                {% column {"sm": 7} %}{% plugin "product_info" %}{% endplugin %}{% endcolumn %}
+            {% endrow %}
+        {% endplaceholder %}
+    </div>
+
+    <hr>
+
+    {% placeholder "content2" %}
+        {% row %}{% plugin "product_description" %}{% endplugin %}{% endrow %}
+        {% row %}{% plugin "product_attributes" %}{% endplugin %}{% endrow %}
+        {% row %}{% plugin "product_package" %}{% endplugin %}{% endrow %}
+        {% row %}{% plugin "product_related" %}
+            title = "Related products"
+            type = "related"
+        {% endplugin %}{% endrow %}
+        {% row %}{% plugin "product_related" %}
+            title = "We recommend these products"
+            type = "recommended"
+        {% endplugin %}{% endrow %}
+        {% row %}{% plugin "product_related" %}
+            title = "Users who bought this product also bought"
+            type = "computed"
+        {% endplugin %}{% endrow %}
+    {% endplaceholder %}
+{% endblock %}
